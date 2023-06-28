@@ -1,0 +1,52 @@
+import tkinter as tk
+import pyproj
+
+def koordinaten_konvertieren():
+    breitengrad = float(breitengrad_entry.get())
+    laengengrad = float(laengengrad_entry.get())
+
+    # Definieren des Ursprungs-Koordinatensystems (geografisch)
+    ursprung = pyproj.Proj(proj='latlong', datum='WGS84')
+
+    # Definieren des Ziel-Koordinatensystems (UTM)
+    ziel = pyproj.Proj(proj='utm', zone=32, datum='WGS84')
+
+    # Koordinaten konvertieren
+    easting, northing = pyproj.transform(ursprung, ziel, laengengrad, breitengrad)
+
+    easting_result_label.configure(text=f"Ostwert: {easting}")
+    northing_result_label.configure(text=f"Nordwert: {northing}")
+
+# Erstellen des Anwendungsfensters
+fenster = tk.Tk()
+fenster.title("Koordinatenkonverter")
+fenster.geometry("300x200")
+
+# Beschriftungen und Eingabefelder
+breitengrad_label = tk.Label(fenster, text="Breitengrad:")
+breitengrad_label.pack()
+
+breitengrad_entry = tk.Entry(fenster)
+breitengrad_entry.pack()
+
+laengengrad_label = tk.Label(fenster, text="Längengrad:")
+laengengrad_label.pack()
+
+laengengrad_entry = tk.Entry(fenster)
+laengengrad_entry.pack()
+
+# Konvertierungsknopf
+konvertieren_button = tk.Button(fenster, text="Konvertieren", command=koordinaten_konvertieren)
+konvertieren_button.pack()
+
+# Ergebnisse
+easting_result_label = tk.Label(fenster, text="Ostwert: ")
+easting_result_label.pack()
+
+northing_result_label = tk.Label(fenster, text="Nordwert: ")
+northing_result_label.pack()
+
+# Ausführung der Anwendung
+fenster.mainloop()
+
+code: Barbosa2023
